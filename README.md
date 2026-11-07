@@ -30,6 +30,7 @@ The project currently includes the following content categories:
 - `src/shared/categories.js` — category definitions and keyword matching
 - `src/shared/storage.js` — local storage handling for user settings and protection state
 - `src/content/content.js` — page-content filtering logic
+- `src/background/background.js` — background service worker for page navigation tracking
 - `src/blocked/` — blocked-page UI shown when a page is filtered
 - `icons/` — extension icons
 
@@ -74,12 +75,13 @@ The dashboard displays each category with an icon, label, and description, and o
 
 ## Content filtering workflow
 
-The extension filters page content based on the selected categories and shows a blocked-page view when a matching page is detected.
+The extension filters page content based on the selected categories and uses the background worker to monitor navigation and trigger the blocked-page experience when a matching page is detected.
 
 - open the extension popup and choose the categories to block
 - visit a page that contains content from those categories
-- the matching content is hidden and replaced with the blocked-page experience
-- the user can still return to browsing only after the protection settings are re-entered and managed intentionally
+- the background worker observes navigation and the content script evaluates the page
+- matching content is hidden and replaced with the blocked-page experience
+- access is deliberately protected so the user must re-enter settings intentionally before browsing resumes
 
 ## Notes
 

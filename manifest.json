@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "Block the kinds of content you don't want to see, protected by a password.",
   "permissions": [
-    "storage"
+    "storage",
+    "webNavigation"
   ],
   "icons": {
     "16": "icons/icon16.png",
@@ -14,6 +15,9 @@
   "action": {
     "default_popup": "src/popup/popup.html",
     "default_title": "SafeEyes"
+  },
+  "background": {
+    "service_worker": "src/background/background.js"
   },
   "content_scripts": [
     {
