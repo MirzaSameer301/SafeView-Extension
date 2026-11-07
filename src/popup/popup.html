@@ -55,6 +55,22 @@
       </section>
 
       <section id="view-dashboard" class="view" hidden>
+        <div id="status-card" class="status-card">
+          <div>
+            <p id="status-text" class="status-title"></p>
+            <p id="status-subtext" class="muted small"></p>
+          </div>
+          <label class="switch">
+            <input
+              id="protection-toggle"
+              type="checkbox"
+              role="switch"
+              aria-label="Protection on or off"
+            />
+            <span class="slider"></span>
+          </label>
+        </div>
+
         <h2 class="section-title">Categories to block</h2>
         <ul id="category-list" class="category-list"></ul>
         <button id="apply-button" type="button" class="btn btn-primary" disabled>
@@ -67,6 +83,39 @@
         </button>
       </section>
     </main>
+
+    <dialog id="confirm-dialog">
+      <h3>Do you really want to turn protection off?</h3>
+      <p class="muted">
+        You switched this on for a reason. Take a moment before you decide.
+      </p>
+      <div class="dialog-actions">
+        <button id="confirm-keep" type="button" class="btn btn-primary">
+          Keep me protected
+        </button>
+        <button id="confirm-disable" type="button" class="btn btn-ghost">
+          Yes, turn it off
+        </button>
+      </div>
+    </dialog>
+
+    <dialog id="password-dialog">
+      <h3>Enter your password</h3>
+      <p class="muted">Your password is required to turn protection off.</p>
+      <form id="password-form" novalidate>
+        <label class="field">
+          <span>Password</span>
+          <input id="disable-password" type="password" autocomplete="current-password" />
+        </label>
+        <p id="disable-error" class="error" role="alert"></p>
+        <div class="dialog-actions">
+          <button type="submit" class="btn btn-danger">Turn protection off</button>
+          <button id="password-cancel" type="button" class="btn btn-ghost">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </dialog>
 
     <template id="category-template">
       <li>

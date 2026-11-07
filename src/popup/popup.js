@@ -85,8 +85,18 @@ $("logout-button").addEventListener("click", () => showView("login"));
 
 async function openDashboard() {
   const state = await Store.getState();
+  renderProtectionStatus(state.enabled);
   renderCategories(state.selectedCategories || []);
   showView("dashboard");
+}
+
+function renderProtectionStatus(enabled) {
+  $("protection-toggle").checked = enabled;
+  $("status-card").classList.toggle("is-off", !enabled);
+  $("status-text").textContent = enabled ? "Protection is ON" : "Protection is OFF";
+  $("status-subtext").textContent = enabled
+    ? "Blocked categories are hidden."
+    : "Nothing is being blocked right now.";
 }
 
 let appliedIds = [];
@@ -145,6 +155,46 @@ $("apply-button").addEventListener("click", async () => {
       ? "Changes applied. Refresh open tabs to see them."
       : "Changes applied. No category is selected, so nothing will be blocked."
   );
+});
+
+const confirmDialog = $("confirm-dialog");
+const passwordDialog = $("password-dialog");
+
+$("protection-toggle").addEventListener("change", async (event) => {
+  if (event.target.checked) {
+    await Store.setEnabled(true);
+    renderProtectionStatus(true);
+    return;
+  }
+
+  event.target.checked = true;
+  confirmDialog.showModal();
+});
+
+$("confirm-keep").addEventListener("click", () => confirmDialog.close());
+$("confirm-disable").addEventListener("click", () => {
+  confirmDialog.close();
+  passwordDialog.showModal();
+});
+
+$("password-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const isCorrect = await Store.verifyPassword($("disable-password").value);
+
+  if (!isCorrect) {
+    return setMessage("disable-error", "Incorrect password. Protection stays on.");
+  }
+
+  await Store.setEnabled(false);
+  renderProtectionStatus(false);
+  passwordDialog.close();
+});
+
+$("password-cancel").addEventListener("click", () => passwordDialog.close());
+
+passwordDialog.addEventListener("close", () => {
+  $("password-form").reset();
+  setMessage("disable-error", "");
 });
 
 async function init() {

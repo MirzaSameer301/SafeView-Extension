@@ -73,12 +73,47 @@ p  { margin: 0 0 12px; }
 .btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 .btn-primary { background: var(--primary); color: #fff; }
 .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover { background: #b91c1c; }
 .btn-ghost { background: transparent; border-color: var(--border); color: var(--text); }
 .btn-ghost:hover { background: var(--border); }
 .btn:disabled { opacity: .5; cursor: not-allowed; }
 #apply-button { margin-top: 4px; }
 #save-hint { min-height: 18px; margin: 8px 0 0; }
 #logout-button { margin-top: 12px; }
+
+/* ---------- Protection status card ---------- */
+.status-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius);
+  background: #f0fdf4;
+}
+.status-card.is-off { border-color: #fecaca; background: #fef2f2; }
+.status-title { margin: 0; font-weight: 700; }
+.status-card .muted { margin: 0; }
+
+/* ---------- Toggle switch ---------- */
+.switch { position: relative; display: inline-block; flex-shrink: 0; width: 46px; height: 26px; }
+.switch input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; z-index: 1; }
+.slider { position: absolute; inset: 0; border-radius: 999px; background: #cbd5e1; transition: background-color .2s; }
+.slider::before {
+  content: "";
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+  transition: transform .2s;
+}
+.switch input:checked + .slider { background: var(--success); }
+.switch input:checked + .slider::before { transform: translateX(20px); }
+.switch input:focus-visible + .slider { outline: 2px solid var(--primary); outline-offset: 2px; }
 
 /* ---------- Category list ---------- */
 .category-list { max-height: 270px; margin: 0 0 8px; padding: 0; overflow-y: auto; list-style: none; }
@@ -99,3 +134,15 @@ p  { margin: 0 0 12px; }
 .category-icon { font-size: 22px; }
 .category-text { display: flex; flex: 1; flex-direction: column; }
 .category-checkbox { width: 18px; height: 18px; accent-color: var(--primary); }
+
+/* ---------- Dialogs ---------- */
+dialog {
+  width: 320px;
+  padding: 20px;
+  border: none;
+  border-radius: var(--radius);
+  color: var(--text);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, .3);
+}
+dialog::backdrop { background: rgba(15, 23, 42, .5); }
+.dialog-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
