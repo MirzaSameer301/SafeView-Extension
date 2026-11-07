@@ -90,7 +90,7 @@ SafeEyes is tested manually, step by step, using a local test page. **[TESTING.m
 
 ## Build log
 
-This project was built in 10 steps, and the latest work is the current commit on `main`.
+This project was built in 11 steps, and the latest work is the current commit on `main`.
 
 | Step | What was added | Commit message |
 |---|---|---|
@@ -104,6 +104,7 @@ This project was built in 10 steps, and the latest work is the current commit on
 | 8 | Password-protected disable flow | `Enhance popup functionality: implement protection toggle with confirmation and password verification` |
 | 9 | Content filtering and blocked-page UI | `Add content filtering feature: implement page content blocking and blocked-page UI` |
 | 10 | Background navigation tracking and extension-page protection | `Add background service worker for navigation tracking and enhance content filtering workflow` |
+| 11 | Extension page security and temporary unlock | `Enhance extension security: implement password protection for extensions page access and add temporary unlock feature` |
 
 ## Known limitations
 
