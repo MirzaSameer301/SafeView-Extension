@@ -2,6 +2,7 @@ const $ = (id) => document.getElementById(id);
 
 const views = {
   register: $("view-register"),
+  login: $("view-login"),
 };
 
 function showView(name) {
@@ -33,12 +34,30 @@ $("register-form").addEventListener("submit", async (event) => {
   await Store.register(name, password);
   event.target.reset();
   setMessage("register-error", "");
-  console.log("Account created. The next step adds the screen that follows.");
+  $("login-name").textContent = name;
+  showView("login");
 });
 
+$("login-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const isCorrect = await Store.verifyPassword($("login-password").value);
+
+  if (!isCorrect)
+    return setMessage("login-error", "Incorrect password. Please try again.");
+
+  event.target.reset();
+  setMessage("login-error", "");
+  console.log("Unlocked. The next step adds the settings screen.");
+});
 
 async function init() {
-  showView("register");
+  const { user } = await Store.getState();
+  if (user) {
+    $("login-name").textContent = user.name;
+    showView("login");
+  } else {
+    showView("register");
+  }
 }
 
 init();
