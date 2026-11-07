@@ -29,6 +29,8 @@ The project currently includes the following content categories:
 - `src/` — extension logic and interface files
 - `src/shared/categories.js` — category definitions and keyword matching
 - `src/shared/storage.js` — local storage handling for user settings and protection state
+- `src/content/content.js` — page-content filtering logic
+- `src/blocked/` — blocked-page UI shown when a page is filtered
 - `icons/` — extension icons
 
 ## Storage and protection model
@@ -69,6 +71,15 @@ The popup currently follows a safety-first flow:
 7. Lock the dashboard again when finished.
 
 The dashboard displays each category with an icon, label, and description, and only enables the Apply button when the current selection differs from the saved state. The protection status card also shows whether blocking is active, and the state is saved in browser local storage so it persists across popup sessions.
+
+## Content filtering workflow
+
+The extension filters page content based on the selected categories and shows a blocked-page view when a matching page is detected.
+
+- open the extension popup and choose the categories to block
+- visit a page that contains content from those categories
+- the matching content is hidden and replaced with the blocked-page experience
+- the user can still return to browsing only after the protection settings are re-entered and managed intentionally
 
 ## Notes
 

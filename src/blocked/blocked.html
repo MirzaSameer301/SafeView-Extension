@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Content not available</title>
+  <link rel="stylesheet" href="blocked.css">
+</head>
+<body>
+  <main class="card">
+    <div class="icon" aria-hidden="true">🚫</div>
+    <h1>This content isn't available</h1>
+    <p class="lead">You are not authorized to view this content.</p>
+
+    <p class="category-tag"><span id="category-name">Restricted content</span></p>
+    <p id="reason-text" class="reason"></p>
+
+    <p class="note">
+      SafeEyes is protecting this browser. This was blocked because of the
+      categories chosen in your settings. If you think this is a mistake, open the
+      SafeEyes extension and review your categories.
+    </p>
+
+    <button id="back-button" type="button">Go back</button>
+  </main>
+
+  <script src="../shared/categories.js"></script>
+  <script src="blocked.js"></script>
+</body>
+</html>
