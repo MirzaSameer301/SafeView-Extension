@@ -54,7 +54,15 @@ Passwords are hashed before being stored, and verification is performed against 
 
 ## Current popup flow
 
-The popup currently includes a registration view where users create an account before accessing the rest of the protection settings. The code stores the hashed password and the enabled state in browser local storage so the extension can persist user configuration safely.
+The popup currently follows a simple protection flow:
+
+1. Register a user with a valid name and password.
+2. Log back in with the saved password.
+3. Open the dashboard view to select which categories to block.
+4. Toggle category checkboxes and click Apply changes to save the updated settings.
+5. Lock the dashboard again when finished.
+
+The dashboard displays each category with an icon, label, and description, and only enables the Apply button when the current selection differs from the saved state. Changes are stored in browser local storage so the selected categories persist across popup sessions.
 
 ## Notes
 

@@ -32,6 +32,7 @@ h3 { margin: 0 0 6px; font-size: 16px; }
 p  { margin: 0 0 12px; }
 .muted { color: var(--muted); }
 .small { font-size: 12px; }
+.section-title { margin: 16px 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
 
 .app-header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
 .logo { font-size: 22px; }
@@ -63,4 +64,30 @@ p  { margin: 0 0 12px; }
 }
 .btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 .btn-primary { background: var(--primary); color: #fff; }
-.btn-primary:hover { background: var(--primary-dark); }
+.btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+.btn-ghost { background: transparent; border-color: var(--border); color: var(--text); }
+.btn-ghost:hover { background: var(--border); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+#apply-button { margin-top: 4px; }
+#save-hint { min-height: 18px; margin: 8px 0 0; }
+#logout-button { margin-top: 12px; }
+
+/* ---------- Category list ---------- */
+.category-list { max-height: 270px; margin: 0 0 8px; padding: 0; overflow-y: auto; list-style: none; }
+.category-list li + li { margin-top: 8px; }
+.category {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color .15s, background-color .15s;
+}
+.category:hover { border-color: var(--primary); }
+.category:has(input:checked) { border-color: var(--primary); background: var(--primary-soft); }
+.category-icon { font-size: 22px; }
+.category-text { display: flex; flex: 1; flex-direction: column; }
+.category-checkbox { width: 18px; height: 18px; accent-color: var(--primary); }

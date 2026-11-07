@@ -52,7 +52,33 @@
           <button type="submit" class="btn btn-primary">Unlock</button>
         </form>
       </section>
+
+      <section id="view-dashboard" class="view" hidden>
+        <h2 class="section-title">Categories to block</h2>
+        <ul id="category-list" class="category-list"></ul>
+        <button id="apply-button" type="button" class="btn btn-primary" disabled>
+          Apply changes
+        </button>
+        <p id="save-hint" class="muted small" aria-live="polite"></p>
+
+        <button id="logout-button" type="button" class="btn btn-ghost">
+          Lock settings
+        </button>
+      </section>
     </main>
+
+    <template id="category-template">
+      <li>
+        <label class="category">
+          <span class="category-icon" aria-hidden="true"></span>
+          <span class="category-text">
+            <strong class="category-label"></strong>
+            <span class="category-desc muted small"></span>
+          </span>
+          <input type="checkbox" class="category-checkbox" />
+        </label>
+      </li>
+    </template>
 
     <script src="../shared/categories.js"></script>
     <script src="../shared/storage.js"></script>
