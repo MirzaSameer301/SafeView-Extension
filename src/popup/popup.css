@@ -49,6 +49,14 @@ p  { margin: 0 0 12px; }
   font: inherit;
 }
 .field input:focus { outline: 2px solid var(--primary); outline-offset: 1px; border-color: var(--primary); }
+
+/* ---------- Password requirements checklist ---------- */
+.rules { margin: -4px 0 8px; padding: 0; list-style: none; color: var(--muted); font-size: 12px; }
+.rules li { display: flex; align-items: center; gap: 6px; line-height: 1.7; }
+.rules li::before { content: "○"; }
+.rules li.met { color: var(--success); }
+.rules li.met::before { content: "✓"; font-weight: 700; }
+
 .error { min-height: 20px; margin-bottom: 8px; color: var(--danger); font-size: 13px; }
 
 /* ---------- Buttons ---------- */

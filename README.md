@@ -46,9 +46,13 @@ Passwords are hashed before being stored, and verification is performed against 
 1. Open the project in a browser extension development environment.
 2. Load the extension in Chrome or another compatible browser.
 3. Open the popup and register a user with a name and password.
-4. The registration form validates that:
+4. The registration form requires that:
    - the name is at least 2 characters long
    - the password is at least 5 characters long
+   - the password includes an uppercase letter
+   - the password includes a lowercase letter
+   - the password includes a number
+   - the password includes a special character
 5. Choose the content categories to block.
 6. Use the extension to limit unsafe content while browsing.
 

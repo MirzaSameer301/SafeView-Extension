@@ -20,11 +20,39 @@ function setMessage(elementId, message) {
   $(elementId).textContent = message;
 }
 
+const PASSWORD_RULES = [
+  { label: "At least 5 characters", test: (password) => password.length >= 5 },
+  { label: "One uppercase letter (A-Z)", test: (password) => /[A-Z]/.test(password) },
+  { label: "One lowercase letter (a-z)", test: (password) => /[a-z]/.test(password) },
+  { label: "One number (0-9)", test: (password) => /\d/.test(password) },
+  { label: "One special character (e.g. @ # $ !)", test: (password) => /[^A-Za-z0-9\s]/.test(password) },
+];
+
 function validateRegistration(name, password) {
   if (name.length < 2) return "Please enter your name (at least 2 characters).";
-  if (password.length < 5) return "Your password needs at least 5 characters.";
+  if (!PASSWORD_RULES.every((rule) => rule.test(password))) {
+    return "Your password does not meet all the requirements yet.";
+  }
   return "";
 }
+
+function renderPasswordRules(password) {
+  const list = $("password-rules");
+  list.replaceChildren();
+
+  PASSWORD_RULES.forEach((rule) => {
+    const item = document.createElement("li");
+    item.textContent = rule.label;
+    item.classList.toggle("met", rule.test(password));
+    list.appendChild(item);
+  });
+}
+
+$("register-password").addEventListener("input", (event) => {
+  renderPasswordRules(event.target.value);
+});
+
+renderPasswordRules("");
 
 $("register-form").addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -36,6 +64,7 @@ $("register-form").addEventListener("submit", async (event) => {
 
   await Store.register(name, password);
   event.target.reset();
+  renderPasswordRules("");
   setMessage("register-error", "");
   await openDashboard();
 });
