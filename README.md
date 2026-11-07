@@ -17,6 +17,17 @@ Its settings are protected by a password and a “think twice” confirmation, s
 - Protect settings with a password
 - Require a confirmation prompt before disabling protection
 
+## Blocked content categories
+
+The extension currently supports these categories:
+
+- Kissing scenes
+- Romance
+- Adultery & affairs
+- Violence & gore
+- 18+ adult content
+- Gambling & betting
+
 ## Getting started
 
 1. Open the project folder in your browser extension development environment.
