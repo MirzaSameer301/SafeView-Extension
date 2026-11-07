@@ -1,0 +1,18 @@
+/* Extra styles for the password form; the card itself comes from blocked.css */
+.field { display: block; margin-bottom: 8px; text-align: left; }
+.field span { display: block; margin-bottom: 4px; font-weight: 600; }
+.field input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font: inherit;
+}
+.field input:focus { outline: 2px solid #4f46e5; outline-offset: 1px; border-color: #4f46e5; }
+
+.error { min-height: 22px; margin: 0 0 8px; color: #dc2626; font-size: 14px; text-align: left; }
+
+.actions { display: flex; flex-direction: column; gap: 8px; }
+.actions button { width: 100%; }
+button.secondary { background: transparent; border: 1px solid #cbd5e1; color: #0f172a; }
+button.secondary:hover { background: #e2e8f0; }

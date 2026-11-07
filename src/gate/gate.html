@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Password required</title>
+  <link rel="stylesheet" href="../blocked/blocked.css"> <!-- same card look as the blocked page -->
+  <link rel="stylesheet" href="gate.css">
+</head>
+<body>
+  <main class="card">
+    <div class="icon" aria-hidden="true">🔒</div>
+    <h1>Extensions are locked</h1>
+    <p class="lead">Are you sure you want to change or remove SafeEyes?</p>
+    <p class="note">You turned this protection on for a reason. Enter your password only if you are sure.</p>
+
+    <form id="gate-form" novalidate>
+      <label class="field">
+        <span>Password</span>
+        <input id="gate-password" type="password" autocomplete="current-password" autofocus>
+      </label>
+      <p id="gate-error" class="error" role="alert"></p>
+      <div class="actions">
+        <button type="submit">Unlock</button>
+        <button id="gate-cancel" type="button" class="secondary">No, take me back</button>
+      </div>
+    </form>
+  </main>
+
+  <script src="../shared/storage.js"></script>
+  <script src="gate.js"></script>
+</body>
+</html>

@@ -7,6 +7,7 @@ const DEFAULT_STATE = {
   user: null,
   selectedCategories: [],
   enabled: true,
+  temporaryAccessUntil: 0,
 };
 
 async function hashPassword(password, salt) {
@@ -44,5 +45,15 @@ const Store = {
 
   setSelectedCategories(ids) {
     return chrome.storage.local.set({ selectedCategories: ids });
+  },
+
+ 
+  grantTemporaryAccess(minutes) {
+    return chrome.storage.session.set({ unlockedUntil: Date.now() + minutes * 60 * 1000 });
+  },
+
+  async hasTemporaryAccess() {
+    const { unlockedUntil } = await chrome.storage.session.get({ unlockedUntil: 0 });
+    return unlockedUntil > Date.now();
   },
 };

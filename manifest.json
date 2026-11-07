@@ -5,6 +5,7 @@
   "description": "Block the kinds of content you don't want to see, protected by a password.",
   "permissions": [
     "storage",
+    "tabs",
     "webNavigation"
   ],
   "icons": {

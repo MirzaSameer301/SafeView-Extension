@@ -35,3 +35,20 @@ function showBlockedPage(tabId, category, reason, origin) {
 
 chrome.webNavigation.onBeforeNavigate.addListener(checkNavigation);
 chrome.webNavigation.onHistoryStateUpdated.addListener(checkNavigation);
+
+const EXTENSIONS_PAGE = /^(chrome|edge|brave):\/\/extensions/;
+
+async function guardExtensionsPage(tabId, url) {
+  if (!url || !EXTENSIONS_PAGE.test(url)) return;
+
+  const { user } = await Store.getState();
+  if (!user) return;
+  if (await Store.hasTemporaryAccess()) return;
+
+  const gatePage = chrome.runtime.getURL("src/gate/gate.html");
+  chrome.tabs.update(tabId, { url: `${gatePage}?next=${encodeURIComponent(url)}` });
+}
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
+  guardExtensionsPage(tabId, changeInfo.url);
+});

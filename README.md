@@ -1,88 +1,128 @@
-# SafeEyes
+# SafeEyes 🛡️
 
-SafeEyes is a browser extension designed to help parents and individuals block harmful categories of content from social media and search results. It focuses on categories such as violence, adult material, and other content that may be unsuitable for younger users or sensitive browsing.
+SafeEyes is a browser extension that helps families control what they see online. You choose the categories you want to avoid (violence, adult content, romance, gambling...). SafeEyes then hides matching content, blocks related searches and websites, and keeps its settings behind a password so protection can't be switched off on impulse.
 
-The extension is built with a deliberate safety-first approach: settings are protected by a password, and turning protection off requires a second confirmation step so it cannot be disabled on impulse.
+> Status: frontend demo. Accounts, categories and blocked domains live in the browser. There is no backend yet.
 
-## Core features
+![Settings screen](docs/screenshots/settings.png)
 
-- Category-based filtering for harmful content
-- Protection against unsafe browsing categories such as violence and adult material
-- Password-protected settings
-- “Think twice” confirmation before disabling protection
-- Local browser storage for saved user preferences and enabled state
+## Why I built it
 
-## Supported content categories
+Social media is full of violent, adult and offensive content and ads. Parents worry about what their children see, and many adults want to cut back but find it hard to stop. SafeEyes puts a password-protected filter between people and that content.
 
-The project currently includes the following content categories:
+## Features
 
-- Kissing scenes
-- Romance
-- Adultery & affairs
-- Violence & gore
-- 18+ adult content
-- Gambling & betting
+| Feature | What it does |
+|---|---|
+| Account | Register with a name and a password. Password rules are checked live as you type. |
+| Categories | Pick what to block. Changes are saved when you press **Apply changes**. |
+| Hides content | Posts, paragraphs and list items matching a blocked category disappear, including content a feed loads later. |
+| Blocks searches and sites | Searching a blocked topic (Google, YouTube, Bing...) or opening a blocked site shows a "not authorized" page. |
+| Think twice | Turning protection off asks "Do you really want to turn protection off?", then asks for the password. |
+| Locked extensions page | Opening the browser's extensions page asks for the password first. |
 
-## Project structure
+<p>
+  <img src="docs/screenshots/register.png" alt="Register screen" width="240">
+  <img src="docs/screenshots/disable-dialog.png" alt="Think twice dialog" width="240">
+  <img src="docs/screenshots/blocked.png" alt="Not authorized page" width="240">
+</p>
 
-- `manifest.json` — extension manifest
-- `src/` — extension logic and interface files
-- `src/shared/categories.js` — category definitions and keyword matching
-- `src/shared/storage.js` — local storage handling for user settings and protection state
-- `src/content/content.js` — page-content filtering logic
-- `src/background/background.js` — background service worker for page navigation tracking
-- `src/blocked/` — blocked-page UI shown when a page is filtered
-- `icons/` — extension icons
+## Install (Chrome, Edge, Brave)
 
-## Storage and protection model
+1. Download or clone this repository.
+2. Open `chrome://extensions` (or `edge://extensions`) and switch on **Developer mode**.
+3. Click **Load unpacked** and choose the project folder.
+4. Pin the SafeEyes icon and click it to create your account.
 
-The extension stores its configuration in `chrome.storage.local` using a single shared storage layer. This includes:
+## How to use it
 
-- `user` data with the password hash and salt
-- `enabled` state for the protection toggle
-- `selectedCategories` for the active blocked categories
+1. **Create an account** with a name and a password that meets the rules.
+2. **Tick the categories** you want to block and press **Apply changes**.
+3. Browse as usual. Matching content is hidden, and blocked searches or sites show the "not authorized" page.
+4. To turn protection off, flip the switch, confirm, and enter your password.
 
-Passwords are hashed before being stored, and verification is performed against the saved hash so the extension keeps sensitive settings protected in local storage.
+## How it works
 
-## Getting started
+SafeEyes is plain JavaScript (Manifest V3) with no framework and no build step. It has four parts that share a few small modules.
 
-1. Open the project in a browser extension development environment.
-2. Load the extension in Chrome or another compatible browser.
-3. Open the popup and register a user with a name and password.
-4. The registration form requires that:
-   - the name is at least 2 characters long
-   - the password is at least 5 characters long
-   - the password includes an uppercase letter
-   - the password includes a lowercase letter
-   - the password includes a number
-   - the password includes a special character
-5. Choose the content categories to block.
-6. Use the extension to limit unsafe content while browsing.
+```mermaid
+flowchart LR
+  A[User opens a page or searches] --> B{Background script checks the address}
+  B -- "blocked site or search" --> C[Not-authorized page]
+  B -- allowed --> D[Page loads]
+  D --> E[Content script hides blocked text]
+  F[Popup] -- saves settings --> G[(chrome.storage)]
+  G -- read by --> B
+  G -- read by --> E
+```
 
-## Current popup flow
+| File | Responsibility |
+|---|---|
+| `manifest.json` | Declares the extension, its popup, scripts and permissions |
+| `src/shared/categories.js` | Hard-coded categories with keywords and domains |
+| `src/shared/storage.js` | The only file that touches `chrome.storage` (account, settings, temporary unlock) |
+| `src/shared/filter.js` | Pure matching functions for text and domains |
+| `src/popup/*` | Register, login and settings screens |
+| `src/content/content.js` | Hides blocked content inside web pages |
+| `src/background/background.js` | Watches navigation, blocks searches and sites, guards the extensions page |
+| `src/blocked/*` | The "not authorized" page |
+| `src/gate/*` | The password page shown before the extensions page |
+| `test-pages/*` | A local page for trying the content hiding |
 
-The popup currently follows a safety-first flow:
+Design choices:
 
-1. Register a user with a valid name and password.
-2. Log back in with the saved password.
-3. Open the dashboard view to select which categories to block.
-4. Toggle the protection switch to enable or disable filtering.
-5. If protection is turned off, the user must first confirm the choice and then enter the password again.
-6. Toggle category checkboxes and click Apply changes to save the updated settings.
-7. Lock the dashboard again when finished.
+- **Shared logic lives in small modules** (`storage.js`, `filter.js`) used by the popup, the background script and the content script, so each rule exists in one place.
+- **Only `storage.js` touches `chrome.storage`**, so changing where data is kept later means editing one file.
+- **Pure functions for matching** keep the core logic easy to read and reason about.
+- **User-controlled text is shown with `textContent`**, never `innerHTML`, so nothing from a URL can run as code.
 
-The dashboard displays each category with an icon, label, and description, and only enables the Apply button when the current selection differs from the saved state. The protection status card also shows whether blocking is active, and the state is saved in browser local storage so it persists across popup sessions.
+## Accessibility and UX
 
-## Content filtering workflow
+- Every input has a visible label, and errors use `role="alert"` so screen readers announce them.
+- Focus outlines are visible, and the whole popup works with the keyboard.
+- Dialogs use the native `<dialog>` element, which traps focus and closes with Esc.
+- The Apply button is disabled until there is something to apply, and the settings give clear feedback after saving.
+- Status is never shown by colour alone (the password checklist also changes its symbol).
 
-The extension filters page content based on the selected categories and uses the background worker to monitor navigation and trigger the blocked-page experience when a matching page is detected.
+## Testing
 
-- open the extension popup and choose the categories to block
-- visit a page that contains content from those categories
-- the background worker observes navigation and the content script evaluates the page
-- matching content is hidden and replaced with the blocked-page experience
-- access is deliberately protected so the user must re-enter settings intentionally before browsing resumes
+SafeEyes is tested manually, step by step, using a local test page. **[TESTING.md](TESTING.md)** lists every component (registration, password rules, login, categories, protection switch, hiding content, blocked page, blocked searches and sites, extensions-page lock) with the steps to follow and the result to expect.
 
-## Notes
+## Build log
 
-SafeEyes is designed to make protection deliberate rather than easy to bypass, supporting safer browsing habits for families and individuals.
+This project was built in 10 steps, and the latest work is the current commit on `main`.
+
+| Step | What was added | Commit message |
+|---|---|---|
+| 1 | Initial extension scaffold | `Add initial implementation of SafeEyes browser extension with README, icons, and popup` |
+| 2 | Blocked content categories and popup category wiring | `Add blocked content categories and update popup to include categories script` |
+| 3 | README refactor and storage layer | `Refactor README for clarity, enhance popup structure, and implement storage management for user settings` |
+| 4 | User registration flow | `Implement user registration flow in popup with validation and styling` |
+| 5 | Login flow and password verification | `Implement login functionality in popup with password verification and user feedback` |
+| 6 | Category selection dashboard | `Enhance popup functionality: implement category selection dashboard with apply changes feature and update styles` |
+| 7 | Password requirements checklist | `Enhance registration process: add password requirements checklist and validation feedback` |
+| 8 | Password-protected disable flow | `Enhance popup functionality: implement protection toggle with confirmation and password verification` |
+| 9 | Content filtering and blocked-page UI | `Add content filtering feature: implement page content blocking and blocked-page UI` |
+| 10 | Background navigation tracking and extension-page protection | `Add background service worker for navigation tracking and enhance content filtering workflow` |
+
+## Known limitations
+
+These are deliberate shortcuts for a frontend demo.
+
+- **Password storage.** The password is salted and hashed (SHA-256) in the browser. A real product would keep accounts on a server and hash with bcrypt or argon2.
+- **Uninstall protection is a deterrent, not a lock.** A browser extension cannot intercept its own removal. The extensions page asks for the password, but right-clicking the toolbar icon and choosing "Remove" bypasses it. Real enforcement needs a managed browser policy that force-installs the extension.
+- **Keyword matching is simple.** It can hide harmless text and miss harmful text, and it does not analyse images or video.
+- **Changes apply on reload.** Open tabs need a refresh after settings change.
+- **Chrome-based browsers only** (Chrome, Edge, Brave). Firefox would need small changes.
+
+## Roadmap
+
+- Backend API with parent accounts, and categories loaded from the server
+- Text and image classification instead of plain keywords
+- Separate profiles for each child, with an activity report for parents
+- Full-page options screen and translations (including right-to-left languages)
+- Firefox support
+
+## Author
+
+Built by **SafeEyes team** as a frontend demo. Feedback is welcome through issues.
