@@ -45,9 +45,16 @@ Passwords are hashed before being stored, and verification is performed against 
 
 1. Open the project in a browser extension development environment.
 2. Load the extension in Chrome or another compatible browser.
-3. Register a user and set the protection password.
-4. Choose the content categories to block.
-5. Use the extension to limit unsafe content while browsing.
+3. Open the popup and register a user with a name and password.
+4. The registration form validates that:
+   - the name is at least 2 characters long
+   - the password is at least 5 characters long
+5. Choose the content categories to block.
+6. Use the extension to limit unsafe content while browsing.
+
+## Current popup flow
+
+The popup currently includes a registration view where users create an account before accessing the rest of the protection settings. The code stores the hashed password and the enabled state in browser local storage so the extension can persist user configuration safely.
 
 ## Notes
 

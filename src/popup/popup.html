@@ -2,12 +2,45 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>SafeEyes</title>
+    <link rel="stylesheet" href="popup.css" />
   </head>
-  <body style="width: 300px; padding: 16px; font-family: sans-serif">
-    <h1>SafeEyes</h1>
-    <p>Extension is installed and running.</p>
+  <body>
+    <main class="app">
+      <header class="app-header">
+        <span class="logo" aria-hidden="true">🛡️</span>
+        <h1>SafeEyes</h1>
+      </header>
+
+      <!-- View 1: first-time registration -->
+      <section id="view-register" class="view" hidden>
+        <h2>Create your account</h2>
+        <p class="muted">
+          Choose a name and a password. You will need the password to change any
+          setting.
+        </p>
+        <form id="register-form" novalidate>
+          <label class="field">
+            <span>Name</span>
+            <input id="register-name" type="text" autocomplete="username" />
+          </label>
+          <label class="field">
+            <span>Password</span>
+            <input
+              id="register-password"
+              type="password"
+              autocomplete="new-password"
+            />
+          </label>
+          <p id="register-error" class="error" role="alert"></p>
+          <button type="submit" class="btn btn-primary">Create account</button>
+        </form>
+      </section>
+    </main>
+
     <script src="../shared/categories.js"></script>
     <script src="../shared/storage.js"></script>
+    <script src="popup.js"></script>
   </body>
 </html>
